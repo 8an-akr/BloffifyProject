@@ -1,0 +1,96 @@
+.header {
+  display: flex;
+  margin-bottom: 30px;
+  max-height: 40px;
+}
+
+.header__left {
+  flex: 0.35;
+  display: flex;
+  background-color: white;
+  border-radius: 30px;
+  color: gray;
+  height: fit-content;
+  padding-left: 3px;
+  position: relative;
+  left: 60%;
+  max-width: 400px;
+}
+
+form {
+  margin: 8px 0 8px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header__left > input {
+  border: none;
+  width: 100%;
+  width: 100%;
+}
+
+input {
+  border: 0px solid;
+  position: relative;
+  outline: none;
+}
+
+.searchResults {
+  position: relative;
+  flex: 0.45;
+  max-width: 370px;
+  top: 40px;
+  left: 31%;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 2px;
+  z-index: 100;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  max-height: fit-content;
+  background-color: rgba(82, 82, 82, 0.616);
+  color: rgba(0, 0, 0, 0.616);
+}
+
+.searchRow:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+  opacity: 0.8;
+}
+
+.searchRow__info {
+  margin-left: 20px;
+  padding: 2px;
+}
+
+.searchRow__info > h1 {
+  font-size: 16px;
+}
+
+.searchRow__info > p {
+  font-size: 14px;
+  margin-top: 3px;
+  color: gray;
+}
+
+.searchRow__album {
+  height: 60px;
+  width: 60px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 3rem;
+  font-weight: 630;
+  color: white;
+  background-color: #1db954;
+  height: 29px;
+  width: 78px;
+}
