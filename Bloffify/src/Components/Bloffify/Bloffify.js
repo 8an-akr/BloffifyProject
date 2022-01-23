@@ -6,41 +6,47 @@ import Footer from "../Footer/Footer";
 import Player from "../Player/Player";
 import youtube from "../../youtube";
 import api from "../../serverApi/serverConn";
+import BloffifyContext from "../../Contexts/BloffifyContext";
+import usePlaylist from "../../customHooks/usePlaylist";
+import useIsFirstRun from "../../customHooks/useIsFirstRun";
 
-function Bloffify({ setStorage }) {
+function Bloffify({ setStorage, storage }) {
   const countRef = useRef(7);
   const playerRef = useRef(null);
-
-  const [playlists, setPlaylists] = useState([
-    {
-      name: "",
-      songs: [],
-      img: "https://newjams-images.scdn.co/image/ab676477000033ad/dt/v3/discover-weekly/CNiQsbatLUiCIbJuVN98_woGXyxQ-i0-M2sahuEKp3ydrN4wq5dhQmjZUzj260V8_5Rn6_CytCHR7nDtKcFk0EVrLfpmq3ZUK1HF68MC-TvuuuT7rwCUQ4f2rvRc4snyHV3DVE1bKSN_URirlCj2mCSaB-dCo_r3dmCnO_LRd9RaRuGOtjW_X5u_Wljlskuv3xDiw6cQcCQCNKBH8mboPQ==/NzU6NjU6NDBUODItMTAtMg==",
-    },
-  ]);
-  const [songsOnList, setSongsOnList] = useState(playlists[0].songs);
+  const playlists = usePlaylist();
+  const firstRun = useIsFirstRun();
+  // const [playlists, setPlaylists] = useState([
+  //   {
+  //     name: "",
+  //     songs: [],
+  //     img: "https://newjams-images.scdn.co/image/ab676477000033ad/dt/v3/discover-weekly/CNiQsbatLUiCIbJuVN98_woGXyxQ-i0-M2sahuEKp3ydrN4wq5dhQmjZUzj260V8_5Rn6_CytCHR7nDtKcFk0EVrLfpmq3ZUK1HF68MC-TvuuuT7rwCUQ4f2rvRc4snyHV3DVE1bKSN_URirlCj2mCSaB-dCo_r3dmCnO_LRd9RaRuGOtjW_X5u_Wljlskuv3xDiw6cQcCQCNKBH8mboPQ==/NzU6NjU6NDBUODItMTAtMg==",
+  //   },
+  // ]);
+  // const [songsOnList, setSongsOnList] = useState(playlists[0].songs);
+  const [songsOnList, setSongsOnList] = useState(null);
   const [currentSong, setcurrentSong] = useState(false);
   const [searchedSongs, setsearchedSongs] = useState([]);
 
-  useEffect(() => {
-    const getPlaylists = async () => {
-      const res = await api.get("/playlists");
-      setPlaylists(res.data);
-    };
-    getPlaylists();
-  }, []);
+  // useEffect(() => {
+  //   const getPlaylists = async () => {
+  //     const res = await api.get("/playlists");
+  //     setPlaylists(res.data);
+  //     console.log(res.data);
+  //   };
+  //   getPlaylists();
+  //   return () => {};
+  // }, [storage]);
 
   useEffect(() => {
     const getSongs = async () => {
       playlists[0].songs.map(async (song) => {
         const _id = song;
         const res = await api.get(`/songs/${_id}`);
-        console.log(res.data);
         setSongsOnList((songsOnList) => [...songsOnList, ...res.data]);
       });
     };
-    getSongs();
-    console.log(songsOnList);
+    if (!firstRun) getSongs();
+    return () => {};
   }, [playlists]);
 
   const playing = (id) => {
@@ -115,30 +121,35 @@ function Bloffify({ setStorage }) {
   };
 
   return (
-    <div className="player">
-      <div className="player__body">
-        <Sidebar playlists={playlists} setPlaylists={setPlaylists} />
-        <div className="playerContainer">
-          {currentSong ? (
-            <Player playerRef={playerRef} currentSong={currentSong} />
-          ) : (
-            <></>
-          )}
+    <BloffifyContext.Provider
+      value={{ searchedSongs, search, setStorage, addToPlayList }}
+    >
+      <div className="player">
+        <div className="player__body">
+          {/* <Sidebar playlists={playlists} setPlaylists={setPlaylists} /> */}
+          <Sidebar playlists={playlists} />
+          <div className="playerContainer">
+            {currentSong ? (
+              <Player playerRef={playerRef} currentSong={currentSong} />
+            ) : (
+              <></>
+            )}
+          </div>
+          <Body
+            addToPlayList={addToPlayList}
+            playlists={playlists}
+            songsOnList={songsOnList}
+            playing={playing}
+            search={search}
+            removeFromList={removeFromList}
+            searchedSongs={searchedSongs}
+            changeSong={changeSong}
+            setStorage={setStorage}
+          />
         </div>
-        <Body
-          addToPlayList={addToPlayList}
-          playlists={playlists}
-          songsOnList={songsOnList}
-          playing={playing}
-          search={search}
-          removeFromList={removeFromList}
-          searchedSongs={searchedSongs}
-          changeSong={changeSong}
-          setStorage={setStorage}
-        />
+        <Footer changeSong={changeSong} currentSong={currentSong} />
       </div>
-      <Footer changeSong={changeSong} currentSong={currentSong} />
-    </div>
+    </BloffifyContext.Provider>
   );
 }
 

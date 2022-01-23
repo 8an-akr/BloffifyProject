@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
+import BloffifyContext from "../../Contexts/BloffifyContext";
 
-function Header({ search, searchedSongs, addToPlayList, setStorage }) {
+function Header() {
+  const { searchedSongs, search, setStorage, addToPlayList } =
+    useContext(BloffifyContext);
+
   function onFormSubmit(event) {
     event.preventDefault();
     search(event.currentTarget[0].value);
   }
-
   return (
     <div className="header">
       <div
