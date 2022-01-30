@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
+  console.log(`register: ${req.body.username}`);
   try {
     const user = await User.findOne({ username: req.body.username });
     if (user === null) {
@@ -14,9 +15,10 @@ router.post("/register", async (req, res) => {
         password: hashedPass,
       });
       const savedUser = await user.save();
+      console.log(savedUser);
       res.json(savedUser);
     } else {
-      console.log("Error user already existss");
+      console.log("Error user already existsr");
       res.status(500).json({ msg: "User already exists" });
     }
   } catch (error) {
@@ -27,8 +29,11 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  console.log(`login: ${password}`);
+  console.log(`login: ${username}`);
   try {
     const user = await User.findOne({ username: username });
+    console.log(`login: ${user}`);
     if (user) {
       const dbPassword = user.password;
       const match = await bcrypt.compare(password, dbPassword);

@@ -21,7 +21,7 @@ function App() {
       <Route
         exact
         path="/bloffify"
-        element={<Bloffify storage={storage} setStorage={setStorage} />}
+        element={<Bloffify setStorage={setStorage} />}
       />
     </Routes>
   );

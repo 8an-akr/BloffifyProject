@@ -2,6 +2,7 @@ import axios from "axios";
 
 const port = 3001;
 const storage = localStorage.getItem("bluffifyUser");
+console.log(storage);
 const TOKEN = `bearer ${storage}`;
 
 const instance = axios.create({

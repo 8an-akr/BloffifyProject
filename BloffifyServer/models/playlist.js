@@ -7,7 +7,9 @@ const playlistSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  songs: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Song", required: true }],
+  songs: [
+    { type: mongoose.SchemaTypes.ObjectId, ref: "songs", required: true },
+  ],
   img: { type: String, required: true },
 });
 

@@ -6,11 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import api from "../../serverApi/serverConn";
 import RemoveIcon from "@mui/icons-material/Remove";
-import useIsFirstRun from "../../customHooks/useIsFirstRun";
 
 function Sidebar({ playlists, setPlaylists }) {
-  const firstRun = useIsFirstRun();
-
   const onFormSubmit = async (event) => {
     event.preventDefault();
     const playlistName = event.currentTarget[0].value;
@@ -41,21 +38,18 @@ function Sidebar({ playlists, setPlaylists }) {
       <br />
       <strong className="sidebar__title">PLAYLISTS</strong>
       <hr />
-      {firstRun ? (
-        <></>
-      ) : (
-        playlists?.map((playlist) => {
-          return (
-            <div className="sidebar__songs" key={playlist._id}>
-              <SidebarOption option={playlist.name} />
-              <RemoveIcon
-                onClick={() => deletePlaylist(playlist._id)}
-                className="add-btn"
-              />
-            </div>
-          );
-        })
-      )}
+      {playlists?.map((playlist) => {
+        console.log(playlist);
+        return (
+          <div className="sidebar__songs" key={playlist._id}>
+            <SidebarOption option={playlist.name} />
+            <RemoveIcon
+              onClick={() => deletePlaylist(playlist._id)}
+              className="add-btn"
+            />
+          </div>
+        );
+      })}
       <form onSubmit={(e) => onFormSubmit(e)}>
         <input
           className="sidebar-input"
