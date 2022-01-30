@@ -1,15 +1,15 @@
 import axios from "axios";
 
 const port = 3001;
-const storage = localStorage.getItem("bluffifyUser");
+const storage = localStorage.getItem("accToken");
 const TOKEN = `bearer ${storage}`;
 
-const instance = axios.create({
-  baseURL: `http://localhost:${port}/`,
+const api = axios.create({
+  baseURL: `http://localhost:${port}/api/`,
 });
 
 if (storage) {
-  instance.defaults.headers.common["Authorization"] = TOKEN;
+  api.defaults.headers.common["Authorization"] = TOKEN;
 }
 
-export default instance;
+export default api;
