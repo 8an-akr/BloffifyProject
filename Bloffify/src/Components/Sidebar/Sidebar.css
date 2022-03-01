@@ -37,6 +37,10 @@ h2 {
   padding: 10px;
 }
 
+.sidebar__songs {
+  height: 40px;
+}
+
 .sidebar__songs:hover {
   cursor: pointer;
   background-color: black;

@@ -1,8 +1,12 @@
 import React from "react";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../../store/actions/index";
 
 function Header({ search, searchedSongs, addToPlayList, setStorage }) {
+  const dispatch = useDispatch();
+
   function onFormSubmit(event) {
     event.preventDefault();
     search(event.currentTarget[0].value);
@@ -13,7 +17,7 @@ function Header({ search, searchedSongs, addToPlayList, setStorage }) {
       <div
         className="logout-btn"
         onClick={() => {
-          localStorage.clear();
+          dispatch(logoutAction());
           setStorage();
         }}
       >

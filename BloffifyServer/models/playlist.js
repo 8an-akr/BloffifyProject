@@ -4,13 +4,11 @@ const playlistSchema = new mongoose.Schema({
   name: { type: String, required: true },
   createdBy: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "User",
+    ref: "user",
     required: true,
   },
-  songs: [
-    { type: mongoose.SchemaTypes.ObjectId, ref: "songs", required: true },
-  ],
+  songs: [{ type: mongoose.SchemaTypes.ObjectId, ref: "song", required: true }],
   img: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Playlist", playlistSchema);
+module.exports = mongoose.model("playlist", playlistSchema);

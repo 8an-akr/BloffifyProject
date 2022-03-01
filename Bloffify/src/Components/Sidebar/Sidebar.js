@@ -7,19 +7,24 @@ import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import api from "../../serverApi/serverConn";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-function Sidebar({ playlists, setPlaylists }) {
+function Sidebar({
+  playlists,
+  setCurrentPlaylist,
+  changePlaylist,
+  songsOnList,
+  setSongsOnList,
+}) {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     const playlistName = event.currentTarget[0].value;
     const res = await api.post("playlists/new", { name: playlistName });
-    setPlaylists((playlists) => [...playlists, res.body]);
+    changePlaylist(res.data._id);
   };
 
   const deletePlaylist = async (_id) => {
-    console.log("deleteing");
     const res = await api.delete(`playlists/${_id}`);
-    console.log(res);
-    setPlaylists(playlists.filter(_id !== res.body._id));
+    console.log(res.data);
+    changePlaylist(_id);
   };
 
   return (
@@ -39,16 +44,20 @@ function Sidebar({ playlists, setPlaylists }) {
       <strong className="sidebar__title">PLAYLISTS</strong>
       <hr />
       {playlists?.map((playlist) => {
-        console.log(playlist);
-        return (
-          <div className="sidebar__songs" key={playlist._id}>
-            <SidebarOption option={playlist.name} />
-            <RemoveIcon
-              onClick={() => deletePlaylist(playlist._id)}
-              className="add-btn"
-            />
-          </div>
-        );
+        if (playlist._id) {
+          return (
+            <div className="sidebar__songs" key={playlist._id}>
+              <SidebarOption
+                option={playlist.name}
+                onClick={() => changePlaylist(playlist._id)}
+              />
+              <RemoveIcon
+                onClick={() => deletePlaylist(playlist._id)}
+                className="add-btn"
+              />
+            </div>
+          );
+        }
       })}
       <form onSubmit={(e) => onFormSubmit(e)}>
         <input

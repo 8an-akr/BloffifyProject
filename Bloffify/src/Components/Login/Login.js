@@ -1,10 +1,13 @@
 import "./Login.css";
 import { useState } from "react";
 import api from "../../serverApi/serverConn";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../store/actions/index";
 
 function Login({ setStorage }) {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const dispatch = useDispatch();
 
   const loginUserDB = async ({ username, password }) => {
     const res = await api.post("/users/login", {
@@ -31,6 +34,7 @@ function Login({ setStorage }) {
         const TOKEN = await loginUserDB({ username, password });
         localStorage.setItem("bluffifyUser", TOKEN);
         setStorage(localStorage.getItem("bluffifyUser"));
+        dispatch()(loginAction());
       }
     } catch (err) {
       console.log(err, err.msg);

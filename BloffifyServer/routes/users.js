@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
-  console.log(`register: ${req.body.username}`);
   try {
     const user = await User.findOne({ username: req.body.username });
     if (user === null) {
@@ -16,7 +15,8 @@ router.post("/register", async (req, res) => {
       });
       const savedUser = await user.save();
       console.log(savedUser);
-      res.json(savedUser);
+      const { password, ...info } = savedUser;
+      res.json(info);
     } else {
       console.log("Error user already existsr");
       res.status(500).json({ msg: "User already exists" });

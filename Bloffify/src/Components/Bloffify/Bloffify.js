@@ -8,7 +8,6 @@ import youtube from "../../youtube";
 import api from "../../serverApi/serverConn";
 
 function Bloffify({ setStorage }) {
-  const countRef = useRef(7);
   const playerRef = useRef(null);
 
   const [playlists, setPlaylists] = useState([
@@ -18,30 +17,43 @@ function Bloffify({ setStorage }) {
       img: "https://newjams-images.scdn.co/image/ab676477000033ad/dt/v3/discover-weekly/CNiQsbatLUiCIbJuVN98_woGXyxQ-i0-M2sahuEKp3ydrN4wq5dhQmjZUzj260V8_5Rn6_CytCHR7nDtKcFk0EVrLfpmq3ZUK1HF68MC-TvuuuT7rwCUQ4f2rvRc4snyHV3DVE1bKSN_URirlCj2mCSaB-dCo_r3dmCnO_LRd9RaRuGOtjW_X5u_Wljlskuv3xDiw6cQcCQCNKBH8mboPQ==/NzU6NjU6NDBUODItMTAtMg==",
     },
   ]);
-  const [songsOnList, setSongsOnList] = useState(playlists[0].songs);
+
+  const [songsOnList, setSongsOnList] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState(false);
   const [currentSong, setcurrentSong] = useState(false);
   const [searchedSongs, setsearchedSongs] = useState([]);
 
+  const getPlaylists = async () => {
+    const res = await api.get("/playlists");
+    setPlaylists(res.data);
+  };
+
   useEffect(() => {
-    const getPlaylists = async () => {
-      const res = await api.get("/playlists");
-      setPlaylists(res.data);
-    };
     getPlaylists();
   }, []);
 
   useEffect(() => {
-    const getSongs = async () => {
-      playlists[0].songs.map(async (song) => {
-        const _id = song;
-        const res = await api.get(`/songs/${_id}`);
-        console.log(res.data);
-        setSongsOnList((songsOnList) => [...songsOnList, ...res.data]);
-      });
-    };
-    getSongs();
-    console.log(songsOnList);
+    playlists[0].name !== ""
+      ? changePlaylist(playlists[0]._id)
+      : console.log(playlists);
   }, [playlists]);
+
+  useEffect(() => {
+    console.log(playlists);
+    console.log(currentPlaylist);
+    console.log(songsOnList);
+  }, [currentPlaylist, playlists, songsOnList]);
+
+  useEffect(() => {
+    try {
+      setSongsOnList([
+        ...playlists.filter((playlist) => playlist._id === currentPlaylist)[0]
+          .songs,
+      ]);
+    } catch (error) {
+      console.log("No songs on playlist");
+    }
+  }, [currentPlaylist, playlists]);
 
   const playing = (id) => {
     setcurrentSong(songsOnList.filter((song) => song.id === id)[0]);
@@ -52,19 +64,27 @@ function Bloffify({ setStorage }) {
     setsearchedSongs(res.data.items);
   }
 
-  const addToPlayList = (song) => {
-    console.log(song);
+  const changePlaylist = (id) => {
+    setCurrentPlaylist(id);
+  };
+
+  const addToPlayList = async (song) => {
     const newSong = {
       name: song.snippet.title,
       artist: song.snippet.title.split(" ")[0],
-      id: countRef.current,
       description: song.snippet.description,
       img: song.snippet.thumbnails.default.url,
       url: song.id.videoId,
     };
-    console.log(newSong);
-    countRef.current++;
-    setSongsOnList((songsOnList) => [...songsOnList, newSong]);
+    songsOnList
+      ? setSongsOnList((songsOnList) => [...songsOnList, newSong])
+      : setSongsOnList([newSong]);
+    const savedSong = await api.post("/songs/add/", newSong);
+    console.log(currentPlaylist);
+    const saveToPlaylist = await api.put(
+      `/playlists/${currentPlaylist._id}/${savedSong.data._id}`
+    );
+    console.log(saveToPlaylist.data);
     console.log(songsOnList);
     setsearchedSongs([]);
   };
@@ -117,12 +137,17 @@ function Bloffify({ setStorage }) {
   return (
     <div className="player">
       <div className="player__body">
-        <Sidebar playlists={playlists} setPlaylists={setPlaylists} />
+        <Sidebar
+          changePlaylist={changePlaylist}
+          playlists={playlists}
+          setPlaylists={setPlaylists}
+          songsOnList={songsOnList}
+          setSongsOnList={setSongsOnList}
+          setCurrentPlaylist={setCurrentPlaylist}
+        />
         <div className="playerContainer">
-          {currentSong ? (
+          {currentSong && (
             <Player playerRef={playerRef} currentSong={currentSong} />
-          ) : (
-            <></>
           )}
         </div>
         <Body

@@ -27,13 +27,12 @@ function Body({
       />
 
       <div className="body__info">
-        <img src={playlists[0].img} alt="" />
+        <img src={playlists[0]?.img} alt="" />
         <div className="body__infoText">
           <strong>PLAYLIST</strong>
-          <h2>{playlists[0].name}</h2>
+          <h2>{playlists[0]?.name}</h2>
         </div>
       </div>
-
       <div className="body__songs">
         <div className="body__icons">
           <PlayCircleFilledIcon
@@ -43,14 +42,15 @@ function Body({
           <FavoriteIcon fontSize="large" />
           <MoreHorizIcon />
         </div>
-        {songsOnList.map((song) => (
-          <SongRow
-            playing={playing}
-            song={song}
-            key={song.id}
-            removeFromList={removeFromList}
-          />
-        ))}
+        {songsOnList &&
+          songsOnList.map((song) => (
+            <SongRow
+              playing={playing}
+              song={song}
+              key={song._id}
+              removeFromList={removeFromList}
+            />
+          ))}
       </div>
     </div>
   );
