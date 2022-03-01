@@ -5,7 +5,7 @@ window.env = {
   "BASE_URL": "https://bloffify.herokuapp.com/",
   "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
   "ChocolateyLastPathUpdate": "132904245901316727",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_1616_VLFGJUVMPYHEUELM",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_8896_ONHJRJGRRRYCLBFL",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "CommonProgramFiles": "C:\\Program Files\\Common Files",
@@ -79,5 +79,6 @@ window.env = {
   "VSCODE_GIT_ASKPASS_MAIN": "c:\\Users\\user\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
   "VSCODE_GIT_ASKPASS_NODE": "C:\\Users\\user\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
   "VSCODE_GIT_IPC_HANDLE": "\\\\.\\pipe\\vscode-git-ea02831b44-sock",
-  "windir": "C:\\Windows"
+  "windir": "C:\\Windows",
+  "YOUTUBE_KEY": "AIzaSyBu0jLwEqTKy1JhuABKa6vNmphgea9alUs"
 };
