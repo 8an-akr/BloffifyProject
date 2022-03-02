@@ -34,7 +34,7 @@ function Login({ setStorage }) {
         const TOKEN = await loginUserDB({ username, password });
         localStorage
           .setItem("bluffifyUser", TOKEN)
-          .then(setStorage(localStorage.getItem("bluffifyUser")));
+          .then(() => setStorage(localStorage.getItem("bluffifyUser")));
         dispatch()(loginAction());
       }
     } catch (err) {
