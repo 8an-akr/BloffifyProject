@@ -83,7 +83,7 @@ function Bloffify({ setStorage, storage }) {
     const savedSong = await api.post("/songs/add/", newSong);
     console.log(currentPlaylist);
     const saveToPlaylist = await api.put(
-      `/playlists/${currentPlaylist._id}/${savedSong.data._id}`
+      `/playlists/${currentPlaylist}/${savedSong.data._id}`
     );
     console.log(saveToPlaylist.data);
     console.log(songsOnList);
