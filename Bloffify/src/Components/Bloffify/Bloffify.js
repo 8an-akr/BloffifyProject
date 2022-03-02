@@ -21,7 +21,7 @@ function Bloffify({ setStorage, storage }) {
   const [songsOnList, setSongsOnList] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(false);
   const [currentSong, setcurrentSong] = useState(false);
-  const [searchedSongs, setsearchedSongs] = useState([]);
+  const [searchedSongs, setSearchedSongs] = useState([]);
 
   const getPlaylists = async () => {
     console.log(localStorage.getItem("bluffifyUser"));
@@ -62,7 +62,7 @@ function Bloffify({ setStorage, storage }) {
 
   async function search(input) {
     const res = await youtube.get("/search", { params: { q: input } });
-    setsearchedSongs(res.data.items);
+    setSearchedSongs(res.data.items);
   }
 
   const changePlaylist = (id) => {
@@ -70,24 +70,29 @@ function Bloffify({ setStorage, storage }) {
   };
 
   const addToPlayList = async (song) => {
-    const newSong = {
-      name: song.snippet.title,
-      artist: song.snippet.title.split(" ")[0],
-      description: song.snippet.description,
-      img: song.snippet.thumbnails.default.url,
-      url: song.id.videoId,
-    };
-    songsOnList
-      ? setSongsOnList((songsOnList) => [...songsOnList, newSong])
-      : setSongsOnList([newSong]);
-    const savedSong = await api.post("/songs/add/", newSong);
-    console.log(currentPlaylist);
-    const saveToPlaylist = await api.put(
-      `/playlists/${currentPlaylist}/${savedSong.data._id}`
-    );
-    console.log(saveToPlaylist.data);
-    console.log(songsOnList);
-    setsearchedSongs([]);
+    try {
+      const newSong = {
+        name: song.snippet.title,
+        artist: song.snippet.title.split(" ")[0],
+        description: song.snippet.description,
+        img: song.snippet.thumbnails.default.url,
+        url: song.id.videoId,
+      };
+      songsOnList
+        ? setSongsOnList((songsOnList) => [...songsOnList, newSong])
+        : setSongsOnList([newSong]);
+      const savedSong = await api.post("/songs/add/", newSong);
+      console.log(currentPlaylist);
+      const saveToPlaylist = await api.put(
+        `/playlists/${currentPlaylist}/${savedSong.data._id}`
+      );
+      console.log(saveToPlaylist.data);
+      console.log(songsOnList);
+      setSearchedSongs([]);
+    } catch (error) {
+      setSearchedSongs([]);
+      console.log("error saving song to playlist: " + error);
+    }
   };
 
   const removeFromList = (id) => {
