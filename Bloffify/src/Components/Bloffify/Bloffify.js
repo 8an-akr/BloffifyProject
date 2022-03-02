@@ -24,6 +24,7 @@ function Bloffify({ setStorage }) {
   const [searchedSongs, setsearchedSongs] = useState([]);
 
   const getPlaylists = async () => {
+    console.log(localStorage.getItem("bluffifyUser"));
     const res = await api.get("/playlists");
     setPlaylists(res.data);
   };
