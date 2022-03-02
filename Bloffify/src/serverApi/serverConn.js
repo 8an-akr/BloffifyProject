@@ -10,8 +10,10 @@ const instance = axios.create({
   baseURL: `${env.BASE_URL}`,
 });
 
-if (storage) {
+try {
   instance.defaults.headers.common["Authorization"] = TOKEN;
+} catch (error) {
+  console.log("No token");
 }
 
 export default instance;

@@ -7,7 +7,7 @@ import Player from "../Player/Player";
 import youtube from "../../youtube";
 import api from "../../serverApi/serverConn";
 
-function Bloffify({ setStorage }) {
+function Bloffify({ setStorage, storage }) {
   const playerRef = useRef(null);
 
   const [playlists, setPlaylists] = useState([
@@ -31,7 +31,7 @@ function Bloffify({ setStorage }) {
 
   useEffect(() => {
     getPlaylists();
-  }, []);
+  }, [storage]);
 
   useEffect(() => {
     playlists[0].name !== ""
