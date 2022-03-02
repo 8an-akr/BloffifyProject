@@ -5,7 +5,7 @@ window.env = {
   "BASE_URL": "https://bloffify.herokuapp.com/",
   "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
   "ChocolateyLastPathUpdate": "132904245901316727",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_8896_ONHJRJGRRRYCLBFL",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_10976_VZGMYYINRFUZJKII",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "CommonProgramFiles": "C:\\Program Files\\Common Files",
