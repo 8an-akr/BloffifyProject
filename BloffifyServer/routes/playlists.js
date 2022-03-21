@@ -10,7 +10,7 @@ router.post("/new", async (req, res) => {
       songs: [],
       img: "https://newjams-images.scdn.co/image/ab676477000033ad/dt/v3/discover-weekly/CNiQsbatLUiCIbJuVN98_woGXyxQ-i0-M2sahuEKp3ydrN4wq5dhQmjZUzj260V8_5Rn6_CytCHR7nDtKcFk0EVrLfpmq3ZUK1HF68MC-TvuuuT7rwCUQ4f2rvRc4snyHV3DVE1bKSN_URirlCj2mCSaB-dCo_r3dmCnO_LRd9RaRuGOtjW_X5u_Wljlskuv3xDiw6cQcCQCNKBH8mboPQ==/NzU6NjU6NDBUODItMTAtMg==",
     });
-    const savedPlaylist = await laylist.save();
+    const savedPlaylist = await playlist.save();
     console.log("New playlist saved");
     res.json(savedPlaylist);
   } catch (error) {
@@ -58,6 +58,11 @@ router.get("/", async (req, res) => {
   const userPlaylists = await Playlist.find({
     createdBy: req.user._id,
   }).populate("songs");
+  res.send(userPlaylists);
+});
+router.delete("/", async (req, res) => {
+  const userPlaylists = await Playlist.deleteMany({ name: "My Playlist" });
+  console.log(userPlaylists);
   res.send(userPlaylists);
 });
 

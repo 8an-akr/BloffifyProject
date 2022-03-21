@@ -3,10 +3,17 @@
   background-color: black;
   height: 100vh;
   place-items: center;
+  grid-template-rows: 45vh 19vh 8vh 8vh;
 }
 
-.login > img {
-  height: 200px;
+.login__logo {
+  height: 19vh;
+  margin: -13px;
+}
+
+#bloffify {
+  font-size: 5.5rem;
+  color: white;
 }
 
 .login-btn {

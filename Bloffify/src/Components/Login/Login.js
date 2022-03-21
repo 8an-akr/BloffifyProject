@@ -33,7 +33,8 @@ function Login({ setStorage }) {
       if (username && password) {
         const TOKEN = await loginUserDB({ username, password });
         localStorage.setItem("bluffifyUser", TOKEN);
-        setStorage(TOKEN);
+        const setToken = await localStorage.getItem("bluffifyUser");
+        setStorage(setToken);
         dispatch()(loginAction());
       }
     } catch (err) {
@@ -60,10 +61,14 @@ function Login({ setStorage }) {
 
   return (
     <div className="login">
-      <img
-        src="https://getheavy.com/wp-content/uploads/2019/12/spotify2019-830x350.jpg"
-        alt=""
-      />
+      <div className="logo">
+        <img
+          className="login__logo"
+          src="https://i.pinimg.com/originals/f0/5c/bc/f05cbc8c0f8b075d2b4f1f68fee49649.jpg"
+          alt="Bloffiy"
+        />
+        <h2 id="bloffify">Bloffify</h2>
+      </div>
       <form>
         <input
           id="login-username"
